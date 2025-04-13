@@ -1,0 +1,61 @@
+<div class="container py-5">
+    <h2>Gerenciamento de Pacientes</h2>
+    <p>Bem-vindo ao painel de gerenciamento de pacientes da clínica. Aqui você pode cadastrar novos pacientes,
+        consultar registros existentes, atualizar informações pessoais ou remover pacientes inativos do sistema.</p>
+    <p>Este ambiente foi desenvolvido para garantir um controle eficiente, seguro e intuitivo das informações dos
+        pacientes, facilitando o acompanhamento médico e administrativo.</p>
+    <p class="d-inline-flex">Para cadastrar um novo paciente, clique aqui:</p>
+    <button (click)="modalCadastrarPaciente()" class="btn btn-primary col ms-2">Cadastrar</button>
+
+    <div class="mt-5 flex-row d-flex">
+        <div class="col p-3">
+            <div class="row align-items-center m-0 mb-4">
+                <p class="col m-0 p-0">Lista de pacientes existentes: (selecione um para poder editar ou exlcuir)</p>
+                <div class="flex-row col-auto gx-2">
+                    <button [disabled]="!pacienteSelecionado" (click)="modalEditarPaciente(pacienteSelecionado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button [disabled]="!pacienteSelecionado" (click)="excluirPaciente(pacienteSelecionado)"
+                        class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th>CPF</th>
+                        <th>Nome</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let paciente of pacientes"
+                            [ngClass]="pacienteSelecionado == paciente ? 'table-active' : ''"
+                            (click)="selecionarPaciente(paciente)">
+                            <td>{{ paciente.cpfPaciente }}</td>
+                            <td>{{ paciente.nomePaciente }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col p-3">
+            <p>Consulte aqui um paciente por CPF:</p>
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>CPF</mat-label>
+                <input matInput [(ngModel)]="cpfBusca" mask="000.000.000-00" />
+                <mat-error>CPF inválido</mat-error>
+            </mat-form-field>
+            <button class="btn btn-primary" (click)="buscarPacientePorCpf()" [disabled]="cpfBusca().length != 14">Buscar</button>
+            <div *ngIf="pacienteBuscado" class="mt-4 flex-row d-flex rounded border p-3">
+                <div class="col">
+                    <p class="mb-1">CPF: {{ pacienteBuscado.cpfPaciente }}</p>
+                    <p class="m-0">Nome: {{ pacienteBuscado.nomePaciente }}</p>
+                </div>
+                <div class="flex-row col-auto">
+                    <button (click)="modalEditarPaciente(pacienteBuscado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button (click)="excluirPaciente(pacienteBuscado)"
+                        class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

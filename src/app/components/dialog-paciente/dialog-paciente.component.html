@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Paciente</h2>
+<mat-dialog-content>
+  <p>Insira as informações do paciente:</p>
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>CPF</mat-label>
+    <input matInput [disabled]="isEdicao" [(ngModel)]="cpf" mask="000.000.000-00" />
+    <mat-error>CPF inválido</mat-error>
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="nome"/>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-button (click)="salvar()" [disabled]="cpf()?.length != 14">Salvar</button>
+</mat-dialog-actions>
