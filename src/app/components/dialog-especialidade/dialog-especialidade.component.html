@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Especialidade</h2>
+<mat-dialog-content>
+  <p>Insira os dados da especialidade:</p>
+  <mat-form-field class="w-100 mb-3" *ngIf="isEdicao">
+    <mat-label>ID da Especialidade</mat-label>
+    <input matInput disabled="true" type="number" [(ngModel)]="idEspecialidade"/>
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Nome da especialidade</mat-label>
+    <input matInput [(ngModel)]="nomeEspecialidade"/>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-button (click)="salvar()">Salvar</button>
+</mat-dialog-actions>

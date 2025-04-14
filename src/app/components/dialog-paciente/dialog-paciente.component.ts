@@ -30,19 +30,19 @@ import { Paciente } from "../../pages/pacientes/pacientes.model";
 export class DialogPacientesComponent {
 
 	readonly dialogRef = inject(MatDialogRef<DialogPacientesComponent>);
-	readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+	readonly data = inject<DialogPacienteData>(MAT_DIALOG_DATA);
 	readonly snackbar = inject(MatSnackBar);
 	isEdicao = this.data.isEdicao;
-	cpf = model(this.data.paciente?.cpfPaciente);
-	nome = model(this.data.paciente?.nomePaciente);
+	cpfPaciente = model(this.data.paciente?.cpfPaciente);
+	nomePaciente = model(this.data.paciente?.nomePaciente);
 
 	fechar(paciente?: Paciente) {
 		this.dialogRef.close(paciente);
 	}
 
 	salvar() {
-		let cpfFiltro = this.cpf();
-		let nomeFiltro = this.nome();
+		let cpfFiltro = this.cpfPaciente();
+		let nomeFiltro = this.nomePaciente();
 
 		if (!cpfFiltro || !nomeFiltro) {
 			this.snackbar.open("Não podem haver campos vazios", "Ok", snackbarDefaultConfig);
@@ -59,7 +59,7 @@ export class DialogPacientesComponent {
 
 }
 
-export interface DialogData {
+export interface DialogPacienteData {
 	paciente?: Paciente,
 	isEdicao: boolean
 }

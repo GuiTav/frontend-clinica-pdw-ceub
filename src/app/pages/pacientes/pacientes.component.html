@@ -1,5 +1,5 @@
 <div class="container py-5">
-    <h2>Gerenciamento de Pacientes</h2>
+    <h1 class="mb-3">Pacientes</h1>
     <p>Bem-vindo ao painel de gerenciamento de pacientes da clínica. Aqui você pode cadastrar novos pacientes,
         consultar registros existentes, atualizar informações pessoais ou remover pacientes inativos do sistema.</p>
     <p>Este ambiente foi desenvolvido para garantir um controle eficiente, seguro e intuitivo das informações dos
@@ -7,10 +7,10 @@
     <p class="d-inline-flex">Para cadastrar um novo paciente, clique aqui:</p>
     <button (click)="modalCadastrarPaciente()" class="btn btn-primary col ms-2">Cadastrar</button>
 
-    <div class="mt-5 flex-row d-flex">
+    <div class="mt-5 flex-lg-row flex-column d-flex">
         <div class="col p-3">
             <div class="row align-items-center m-0 mb-4">
-                <p class="col m-0 p-0">Lista de pacientes existentes: (selecione um para poder editar ou exlcuir)</p>
+                <p class="col m-0 p-0">Lista de pacientes existentes: (selecione um para poder editar ou excluir)</p>
                 <div class="flex-row col-auto gx-2">
                     <button [disabled]="!pacienteSelecionado" (click)="modalEditarPaciente(pacienteSelecionado)"
                         class="btn btn-warning me-2">Editar</button>
@@ -39,8 +39,8 @@
         <div class="col p-3">
             <p>Consulte aqui um paciente por CPF:</p>
             <mat-form-field class="w-100 mb-2">
-                <mat-label>CPF</mat-label>
-                <input matInput [(ngModel)]="cpfBusca" mask="000.000.000-00" />
+                <mat-label>CPF do paciente</mat-label>
+                <input matInput [(ngModel)]="cpfBusca" mask="000.000.000-00" (keyup.enter)="buscarPacientePorCpf()" />
                 <mat-error>CPF inválido</mat-error>
             </mat-form-field>
             <button class="btn btn-primary" (click)="buscarPacientePorCpf()" [disabled]="cpfBusca().length != 14">Buscar</button>
