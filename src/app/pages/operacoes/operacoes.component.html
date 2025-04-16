@@ -1,1 +1,69 @@
-<p>operacoes works!</p>
+<div class="container py-5">
+    <h1 class="mb-3">Operações</h1>
+    <p>As operações no sistema da CliniCEUB representam as consultas e exames que podem ser realizados na clínica.</p>
+    <p>Cada uma delas está associada com uma das especialidades oferecidas por nós e possuem um tempo médio de duração, que nos permite 
+        agendá-las evitando sobreposições, seja com o horário de outro paciente ou com o horário do médico.</p>
+    <p>Esta seção permite o gerenciamento das operações que oferecemos, possibilitando o cadastramento de novas operações e a visualização, 
+        edição e deleção das existentes.</p>
+
+    <p class="d-inline-flex">Para cadastrar uma nova operação, clique aqui:</p>
+    <button (click)="modalCadastrarOperacao()" class="btn btn-primary col ms-2">Cadastrar</button>
+
+    <div class="mt-5 flex-lg-row flex-column d-flex">
+        <div class="col p-3">
+            <div class="row align-items-center m-0 mb-4">
+                <p class="col m-0 p-0">Lista de operacões existentes: (selecione uma para poder editar ou excluir)
+                </p>
+                <div class="flex-row col-auto gx-2">
+                    <button [disabled]="!operacaoSelecionada"
+                        (click)="modalEditarOperacao(operacaoSelecionada)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button [disabled]="!operacaoSelecionada"
+                        (click)="excluirOperacao(operacaoSelecionada)" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th>ID</th>
+                        <th>Nome da operação</th>
+                        <th>Especialidade</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let operacao of operacoes"
+                            [ngClass]="operacaoSelecionada == operacao ? 'table-active' : ''"
+                            (click)="selecionarOperacao(operacao)">
+                            <td>{{ operacao.idOperacao }}</td>
+                            <td>{{ operacao.nomeOperacao }}</td>
+                            <td>{{ operacao.especialidade.nomeEspecialidade }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col p-3">
+            <p>Consulte aqui uma operação por ID:</p>
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>ID da operação</mat-label>
+                <input matInput [(ngModel)]="idBusca" type="number" (keyup.enter)="buscarOperacaoPorId()" />
+                <mat-error>ID inválida</mat-error>
+            </mat-form-field>
+            <button class="btn btn-primary" (click)="buscarOperacaoPorId()">Buscar</button>
+            <div *ngIf="operacaoBuscada" class="mt-4 flex-row d-flex rounded border p-3">
+                <div class="col">
+                    <p class="mb-1">ID: {{ operacaoBuscada.idOperacao }}</p>
+                    <p class="m-0">Nome: {{ operacaoBuscada.nomeOperacao }}</p>
+                    <p class="m-0">Descrição: {{ operacaoBuscada.descricaoOperacao }}</p>
+                    <p class="m-0">Duração em minutos: {{ operacaoBuscada.duracaoMinutosOperacao }}</p>
+                    <p class="m-0">Especialidade relacionada: {{ operacaoBuscada.especialidade.nomeEspecialidade }}</p>
+                </div>
+                <div class="flex-row col-auto">
+                    <button (click)="modalEditarOperacao(operacaoBuscada)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button (click)="excluirOperacao(operacaoBuscada)" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

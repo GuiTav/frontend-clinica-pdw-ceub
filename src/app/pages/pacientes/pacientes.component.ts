@@ -13,6 +13,7 @@ import { snackbarDefaultConfig } from '../../app.component';
 import { DialogPacientesComponent } from '../../components/dialog-paciente/dialog-paciente.component';
 import { Paciente } from './pacientes.model';
 import { DialogExclusaoComponent } from '../../components/dialog-exclusao/dialog-exclusao.component';
+import { PacientesService } from './pacientes.service';
 
 @Component({
 	selector: 'app-pacientes',
@@ -34,7 +35,7 @@ export class PacientesComponent implements OnInit {
 	cpfBusca = model("");
 	pacienteBuscado?: Paciente;
 
-	readonly http = inject(HttpClient);
+	readonly pacienteService = inject(PacientesService);
 	readonly snackbar = inject(MatSnackBar);
 	readonly dialog = inject(MatDialog);
 
@@ -43,10 +44,7 @@ export class PacientesComponent implements OnInit {
 	}
 
 	listarPacientes() {
-		this.http.get<Paciente[]>("/api/paciente").subscribe({
-			next: (resultado) => { this.pacientes = resultado },
-			error: () => { this.snackbar.open("Houve uma falha ao buscar pelos pacientes cadastrados", "Ok", snackbarDefaultConfig) }
-		});
+		this.pacienteService.listarPacientes().subscribe((resultado) => this.pacientes = resultado);
 	}
 
 	selecionarPaciente(paciente: Paciente) {
@@ -60,12 +58,9 @@ export class PacientesComponent implements OnInit {
 				return;
 			}
 
-			this.http.post("/api/paciente", pacienteCadastrado).subscribe({
-				next: () => {
-					this.listarPacientes();
-					this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
-				},
-				error: () => { this.snackbar.open("Houve uma falha ao salvar paciente", "Ok", snackbarDefaultConfig) }
+			this.pacienteService.cadastrarPaciente(pacienteCadastrado).subscribe(() => {
+				this.listarPacientes();
+				this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
 			});
 		});
 	}
@@ -75,20 +70,17 @@ export class PacientesComponent implements OnInit {
 			return;
 		}
 
-		let dialogRef = this.dialog.open(DialogPacientesComponent, { data: { paciente: paciente, isEdicao: true} });
+		let dialogRef = this.dialog.open(DialogPacientesComponent, { data: { paciente, isEdicao: true} });
 		dialogRef.afterClosed().subscribe((pacienteEditado: Paciente) => {
 			if (!pacienteEditado) {
 				return;
 			}
 
-			this.http.put("/api/paciente", pacienteEditado).subscribe({
-				next: () => {
-					this.pacienteSelecionado = undefined;
-					this.pacienteBuscado = undefined;
-					this.listarPacientes();
-					this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
-				},
-				error: () => { this.snackbar.open("Houve uma falha ao editar paciente", "Ok", snackbarDefaultConfig) }
+			this.pacienteService.editarPaciente(pacienteEditado).subscribe(() => {
+				this.pacienteSelecionado = undefined;
+				this.pacienteBuscado = undefined;
+				this.listarPacientes();
+				this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
 			});
 		})
 	}
@@ -103,17 +95,12 @@ export class PacientesComponent implements OnInit {
 			if (!confirmacao) {
 				return;
 			}
-
-			let body = { cpf: paciente.cpfPaciente };
 		
-			this.http.delete("/api/paciente", { body }).subscribe({
-				next: () => {
-					this.pacienteSelecionado = undefined;
-					this.pacienteBuscado = undefined;
-					this.listarPacientes();
-					this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
-				},
-				error: () => { this.snackbar.open("Houve uma falha ao excluir paciente", "Ok", snackbarDefaultConfig) }
+			this.pacienteService.excluirPaciente(paciente.cpfPaciente).subscribe(() => {
+				this.pacienteSelecionado = undefined;
+				this.pacienteBuscado = undefined;
+				this.listarPacientes();
+				this.snackbar.open("Sucesso", "Ok", snackbarDefaultConfig);
 			});
 		})
 	}
@@ -124,12 +111,7 @@ export class PacientesComponent implements OnInit {
 			return;
 		}
 		
-		this.http.post<Paciente>("/api/paciente/encontrar", { cpf: this.cpfBusca() }).subscribe({
-			next: (resultado) => {
-				this.pacienteBuscado = resultado;
-			},
-			error: () => { this.snackbar.open(`Paciente não encontrado`, "Ok", snackbarDefaultConfig) }
-		});
+		this.pacienteService.buscarPacientePorCpf(this.cpfBusca()).subscribe((resultado) => this.pacienteBuscado = resultado);
 	}
 
 }

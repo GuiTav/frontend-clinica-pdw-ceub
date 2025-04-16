@@ -51,8 +51,8 @@
             <button class="btn btn-primary" (click)="buscarEspecialidadePorId()">Buscar</button>
             <div *ngIf="especialidadeBuscada" class="mt-4 flex-row d-flex rounded border p-3">
                 <div class="col">
-                    <p class="mb-1">ID da especialidade: {{ especialidadeBuscada.idEspecialidade }}</p>
-                    <p class="m-0">Nome da especialidade: {{ especialidadeBuscada.nomeEspecialidade }}</p>
+                    <p class="mb-1">ID: {{ especialidadeBuscada.idEspecialidade }}</p>
+                    <p class="m-0">Nome: {{ especialidadeBuscada.nomeEspecialidade }}</p>
                 </div>
                 <div class="flex-row col-auto">
                     <button (click)="modalEditarEspecialidade(especialidadeBuscada)"

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Operação</h2>
+<mat-dialog-content>
+  <p>Insira os dados da operação:</p>
+  <mat-form-field class="w-100 mb-3" *ngIf="isEdicao">
+    <mat-label>ID da Operação</mat-label>
+    <input matInput disabled="true" type="number" [(ngModel)]="idOperacao" />
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Nome da operação</mat-label>
+    <input matInput [(ngModel)]="nomeOperacao" />
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Descricao da operação</mat-label>
+    <input matInput [(ngModel)]="descricaoOperacao" />
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Duração da operação em minutos</mat-label>
+    <input matInput [(ngModel)]="duracaoOperacao" type="number" />
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Especialidade associada</mat-label>
+    <input matInput [(ngModel)]="idEspecialidade" [matAutocomplete]="auto" />
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade.idEspecialidade">{{especialidade.nomeEspecialidade}}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-button (click)="salvar()">Salvar</button>
+</mat-dialog-actions>
