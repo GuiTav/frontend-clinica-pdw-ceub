@@ -32,14 +32,7 @@ export class OperacoesService {
 	}
 
 	editarOperacao(operacao: OperacaoReq) {
-		let body: OperacaoReq = {
-			nomeOperacao: operacao.nomeOperacao,
-			descricaoOperacao: operacao.descricaoOperacao,
-			duracaoMinutosOperacao: operacao.duracaoMinutosOperacao,
-			idEspecialidade: operacao.idEspecialidade
-		}
-
-		return this.http.put(`/api/operacao/${operacao.idOperacao}`, body).pipe(
+		return this.http.put(`/api/operacao/${operacao.idOperacao}`, operacao).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao editar operação", "Ok", snackbarDefaultConfig)
 				return EMPTY;

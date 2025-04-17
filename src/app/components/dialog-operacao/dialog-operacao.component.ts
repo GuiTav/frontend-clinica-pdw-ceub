@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, model, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import { EspecialidadesService } from '../../pages/especialidades/especialidades
 		MatDialogContent,
 		MatDialogActions,
 		MatAutocompleteModule,
+		ReactiveFormsModule,
 	],
 	templateUrl: './dialog-operacao.component.html',
 	styleUrl: './dialog-operacao.component.scss'
@@ -34,21 +35,24 @@ export class DialogOperacaoComponent implements OnInit {
 	readonly dialogRef = inject(MatDialogRef<DialogOperacaoComponent>);
 	readonly data = inject<DialogOperacaoData>(MAT_DIALOG_DATA);
 	readonly snackbar = inject(MatSnackBar);
+
 	isEdicao = this.data.isEdicao;
 	idOperacao = model(this.data.operacao?.idOperacao);
 	nomeOperacao = model(this.data.operacao?.nomeOperacao);
 	descricaoOperacao = model(this.data.operacao?.descricaoOperacao);
 	duracaoOperacao = model(this.data.operacao?.duracaoMinutosOperacao);
-	idEspecialidade = model(this.data.operacao?.especialidade.idEspecialidade);
-	nomeEspecialidade = model(this.data.operacao?.especialidade.nomeEspecialidade);
+	especialidade = new FormControl<EspecialidadeRes | undefined>(undefined);
 
 	especialidades: EspecialidadeRes[] = [];
 
 	ngOnInit(): void {
-		this.especialidadeService.listarEspecialidades().subscribe(resultado => this.especialidades = resultado);
+		this.especialidadeService.listarEspecialidades().subscribe(resultado => {
+			this.especialidades = resultado;
+			this.especialidade.setValue(this.data.operacao?.especialidade);
+		});
 	}
 
-	fechar(operacao?: OperacaoReq | OperacaoRes) {
+	fechar(operacao?: OperacaoReq) {
 		this.dialogRef.close(operacao);
 	}
 
@@ -56,7 +60,7 @@ export class DialogOperacaoComponent implements OnInit {
 		let nomeFiltro = this.nomeOperacao();
 		let descricaoFiltro = this.descricaoOperacao();
 		let duracaoFiltro = this.duracaoOperacao();
-		let idEspecialidadeFiltro = this.idEspecialidade();
+		let idEspecialidadeFiltro = this.especialidade.value?.idEspecialidade;
 
 		if (!nomeFiltro || !descricaoFiltro || !duracaoFiltro || !idEspecialidadeFiltro) {
 			this.snackbar.open("Não podem haver campos vazios", "Ok", snackbarDefaultConfig);

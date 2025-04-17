@@ -75,7 +75,7 @@ export class EspecialidadesComponent implements OnInit {
 				return;
 			}
 
-			this.especialidadeService.editarEspecialidade(especialidadeEditada.idEspecialidade, especialidadeEditada).subscribe(() => {
+			this.especialidadeService.editarEspecialidade(especialidadeEditada).subscribe(() => {
 				this.especialidadeSelecionada = undefined;
 				this.especialidadeBuscada = undefined;
 				this.listarEspecialidades();

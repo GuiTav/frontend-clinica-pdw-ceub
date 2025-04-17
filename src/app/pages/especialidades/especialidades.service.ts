@@ -31,8 +31,8 @@ export class EspecialidadesService {
 		);
 	}
 
-	editarEspecialidade(id: number, especialidade: EspecialidadeReq) {
-		return this.http.put(`/api/especialidade/${id}`, especialidade).pipe(
+	editarEspecialidade(especialidade: EspecialidadeReq) {
+		return this.http.put(`/api/especialidade/${especialidade.idEspecialidade}`, especialidade).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao editar especialidade", "Ok", snackbarDefaultConfig)
 				return EMPTY;

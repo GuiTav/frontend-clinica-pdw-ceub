@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Profissional</h2>
+<mat-dialog-content>
+    <p>Insira os dados do profissional:</p>
+    <mat-form-field class="w-100" *ngIf="isEdicao">
+        <mat-label>ID do profissinal</mat-label>
+        <input matInput disabled="true" type="number" [(ngModel)]="idProfissional" />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Nome do profissional</mat-label>
+        <input matInput [(ngModel)]="nomeProfissional" />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Especialidade associada</mat-label>
+        <mat-select [(ngModel)]="especialidadesSelecionadas" multiple>
+                <mat-option *ngFor="let especialidade of especialidades"
+                    [value]="especialidade">{{especialidade.nomeEspecialidade}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="fechar()">Cancelar</button>
+    <button mat-button (click)="salvar()">Salvar</button>
+</mat-dialog-actions>

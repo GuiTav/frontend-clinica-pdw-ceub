@@ -1,1 +1,74 @@
-<p>profissionais works!</p>
+<div class="container py-5">
+    <h1 class="mb-3">Profissionais</h1>
+    <p>Nesta página é possível gerir o quadro de profissionais de saúde da CliniCEUB.</p>
+    <p>Aqui, novos profissionais podem ser cadastrados, enquanto os profissionais existentes podem ser visualizados,
+        editados ou removidos do sistema, bem como realizar a associação dos mesmos à uma das especialidades fornecidas
+        por nós.</p>
+
+    <p class="d-inline-flex">Para cadastrar um novo profissional, clique aqui:</p>
+    <button (click)="modalCadastrarProfissional()" class="btn btn-primary col ms-2">Cadastrar</button>
+
+    <div class="mt-5 flex-lg-row flex-column d-flex">
+        <div class="col p-3">
+            <div class="row align-items-center m-0 mb-4">
+                <p class="col m-0 p-0">Lista de profissionais cadastrados: (selecione um para poder editar ou excluir)
+                </p>
+                <div class="flex-row col-auto gx-2">
+                    <button [disabled]="!profissionalSelecionado"
+                        (click)="modalEditarProfissional(profissionalSelecionado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button [disabled]="!profissionalSelecionado" (click)="excluirProfissional(profissionalSelecionado)"
+                        class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Especialidades</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let profissional of profissionais"
+                            [ngClass]="profissionalSelecionado == profissional ? 'table-active' : ''"
+                            (click)="selecionarProfissional(profissional)">
+                            <td>{{ profissional.idProfissional }}</td>
+                            <td>{{ profissional.nomeProfissional }}</td>
+                            <td>{{ profissional.especialidades | limiteEspecialidade: 3 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col p-3">
+            <p>Consulte aqui um profissional por ID:</p>
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>ID do profissional</mat-label>
+                <input matInput [(ngModel)]="idBusca" type="number" (keyup.enter)="buscarProfissionalPorId()" />
+                <mat-error>ID inválida</mat-error>
+            </mat-form-field>
+            <button class="btn btn-primary" (click)="buscarProfissionalPorId()">Buscar</button>
+            <div *ngIf="profissionalBuscado" class="mt-4 flex-row d-flex rounded border p-3">
+                <div class="col">
+                    <p class="mb-1">ID: {{ profissionalBuscado.idProfissional }}</p>
+                    <p class="m-0">Nome: {{ profissionalBuscado.nomeProfissional }}</p>
+                    <p class="m-0">Especialidades:</p>
+                    <ul class="m-0">
+                        <li
+                            *ngFor="let especialidade of profissionalBuscado.especialidades | slice: 0 : limiteListaEspecialidade">
+                            {{ especialidade.nomeEspecialidade }}</li>
+                    </ul>
+                    <p class="text-decoration-underline text-primary m-0" style="cursor: pointer"
+                        (click)="mostrarMaisEspecialidades()"
+                        *ngIf="limiteListaEspecialidade < profissionalBuscado.especialidades.length">Mostrar mais...</p>
+                </div>
+                <div class="flex-row col-auto">
+                    <button (click)="modalEditarProfissional(profissionalBuscado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button (click)="excluirProfissional(profissionalBuscado)" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
