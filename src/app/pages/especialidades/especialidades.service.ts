@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { snackbarDefaultConfig } from '../../app.component';
 import { catchError, EMPTY } from 'rxjs';
 import { EspecialidadeReq, EspecialidadeRes } from './especialidades.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +15,7 @@ export class EspecialidadesService {
 	readonly snackbar = inject(MatSnackBar);
 
 	listarEspecialidades() {
-		return this.http.get<EspecialidadeRes[]>("/api/especialidade").pipe(
+		return this.http.get<EspecialidadeRes[]>(`${environment.apiUrl}/especialidade`).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao buscar pelas especialidades cadastradas", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -23,7 +24,7 @@ export class EspecialidadesService {
 	}
 
 	cadastrarEspecialidade(especialidade: EspecialidadeReq) {
-		return this.http.post("/api/especialidade", especialidade).pipe(
+		return this.http.post(`${environment.apiUrl}/especialidade`, especialidade).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao salvar especialidade", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -32,7 +33,7 @@ export class EspecialidadesService {
 	}
 
 	editarEspecialidade(especialidade: EspecialidadeReq) {
-		return this.http.put(`/api/especialidade/${especialidade.idEspecialidade}`, especialidade).pipe(
+		return this.http.put(`${environment.apiUrl}/especialidade/${especialidade.idEspecialidade}`, especialidade).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao editar especialidade", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -41,7 +42,7 @@ export class EspecialidadesService {
 	}
 
 	excluirEspecialidade(idEspecialidade: number) {
-		return this.http.delete(`/api/especialidade/${idEspecialidade}`).pipe(
+		return this.http.delete(`${environment.apiUrl}/especialidade/${idEspecialidade}`).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao excluir especialidade", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -50,7 +51,7 @@ export class EspecialidadesService {
 	}
 
 	buscarEspecialidadePorId(id: string) {
-		return this.http.get<EspecialidadeRes>(`/api/especialidade/${id}`).pipe(
+		return this.http.get<EspecialidadeRes>(`${environment.apiUrl}/especialidade/${id}`).pipe(
 			catchError(() => {
 				this.snackbar.open("Especialidade não encontrada", "Ok", snackbarDefaultConfig)
 				return EMPTY;

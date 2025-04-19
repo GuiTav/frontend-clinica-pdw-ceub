@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, EMPTY } from 'rxjs';
 import { snackbarDefaultConfig } from '../../app.component';
 import { OperacaoReq, OperacaoRes } from './operacoes.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +15,7 @@ export class OperacoesService {
 	readonly snackbar = inject(MatSnackBar);
 
 	listarOperacoes() {
-		return this.http.get<OperacaoRes[]>("/api/operacao").pipe(
+		return this.http.get<OperacaoRes[]>(`${environment.apiUrl}/operacao`).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao buscar pelas operações cadastradas", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -23,7 +24,7 @@ export class OperacoesService {
 	}
 
 	cadastrarOperacao(operacao: OperacaoReq) {
-		return this.http.post("/api/operacao", operacao).pipe(
+		return this.http.post(`${environment.apiUrl}/operacao`, operacao).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao salvar operação", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -32,7 +33,7 @@ export class OperacoesService {
 	}
 
 	editarOperacao(operacao: OperacaoReq) {
-		return this.http.put(`/api/operacao/${operacao.idOperacao}`, operacao).pipe(
+		return this.http.put(`${environment.apiUrl}/operacao/${operacao.idOperacao}`, operacao).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao editar operação", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -41,7 +42,7 @@ export class OperacoesService {
 	}
 
 	excluirOperacao(idOperacao: number) {
-		return this.http.delete(`/api/operacao/${idOperacao}`).pipe(
+		return this.http.delete(`${environment.apiUrl}/operacao/${idOperacao}`).pipe(
 			catchError(() => {
 				this.snackbar.open("Houve uma falha ao excluir operação", "Ok", snackbarDefaultConfig)
 				return EMPTY;
@@ -50,7 +51,7 @@ export class OperacoesService {
 	}
 
 	buscarOperacaoPorId(id: string) {
-		return this.http.get<OperacaoRes>(`/api/operacao/${id}`).pipe(
+		return this.http.get<OperacaoRes>(`${environment.apiUrl}/operacao/${id}`).pipe(
 			catchError(() => {
 				this.snackbar.open("Operação não encontrada", "Ok", snackbarDefaultConfig)
 				return EMPTY;

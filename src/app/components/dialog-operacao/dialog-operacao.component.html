@@ -19,10 +19,9 @@
   </mat-form-field>
   <mat-form-field class="w-100">
     <mat-label>Especialidade associada</mat-label>
-    <input matInput [formControl]="especialidade" [value]="especialidade.value?.nomeEspecialidade" [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-select [(ngModel)]="especialidade">
       <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade">{{especialidade.nomeEspecialidade}}</mat-option>
-    </mat-autocomplete>
+    </mat-select>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

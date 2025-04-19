@@ -1,1 +1,77 @@
-<p>agendamentos works!</p>
+<div class="container py-5">
+    <h1 class="mb-3">Agendamentos</h1>
+    <p>Nesta página, é possível controlar todo o processo de agendamento de consultas e exames da CliniCEUB. Cada
+        agendamento associa quatro informações importantes: A operação que será realizada, um profissional, um
+        cliente e por fim o momento de início do procedimento.</p>
+    <p>Vale lembrar que cada operação está associada com a quantidade de minutos que ela costuma demorar, e assim, tanto
+        o médico quanto o paciente serão considerados pelo sistema como "ocupados", impedindo os mesmos de participarem
+        em qualquer outra consulta naquele período.</p>
+
+    <p class="d-inline-flex">Para cadastrar um novo agendamento, clique aqui:</p>
+    <button (click)="modalCadastrarAgendamento()" class="btn btn-primary col ms-2">Cadastrar</button>
+
+    <div class="mt-5 flex-lg-row flex-column d-flex">
+        <div class="col p-3">
+            <div class="row align-items-center m-0 mb-4">
+                <p class="col m-0 p-0">Lista de agendamentos cadastrados: (selecione um para poder editar ou excluir)
+                </p>
+                <div class="flex-row col-auto gx-2">
+                    <button [disabled]="!agendamentoSelecionado"
+                        (click)="modalEditarAgendamento(agendamentoSelecionado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button [disabled]="!agendamentoSelecionado" (click)="excluirAgendamento(agendamentoSelecionado)"
+                        class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th>ID</th>
+                        <th>Data/hora agendada</th>
+                        <th>Cpf do paciente</th>
+                        <th>Operação</th>
+                        <th>Profissional</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let agendamento of agendamentos"
+                            [ngClass]="agendamentoSelecionado == agendamento ? 'table-active' : ''"
+                            (click)="selecionarAgendamento(agendamento)">
+                            <td>{{ agendamento.idAgendamento }}</td>
+                            <td>{{ agendamento.dataHoraAgendamento | date: 'dd/MM/yyyy HH:mm' }}</td>
+                            <td>{{ agendamento.paciente.cpfPaciente }}</td>
+                            <td>{{ agendamento.operacao.nomeOperacao }}</td>
+                            <td>{{ agendamento.profissional.nomeProfissional }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col p-3">
+            <p>Consulte aqui um agendamento por ID:</p>
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>ID do agendamento</mat-label>
+                <input matInput [(ngModel)]="idBusca" type="number" (keyup.enter)="buscarAgendamentoPorId()" />
+                <mat-error>ID inválida</mat-error>
+            </mat-form-field>
+            <button class="btn btn-primary" (click)="buscarAgendamentoPorId()">Buscar</button>
+            <div *ngIf="agendamentoBuscado" class="mt-4 flex-row d-flex rounded border p-3">
+                <div class="col">
+                    <p class="mb-1">ID: {{ agendamentoBuscado.idAgendamento }}</p>
+                    <p class="m-0">Data/hora agendada: {{ agendamentoBuscado.dataHoraAgendamento | date: 'dd/MM/yyyy
+                        hh:mm' }}</p>
+                    <p class="m-0">Cpf do paciente: {{ agendamentoBuscado.paciente.cpfPaciente }}</p>
+                    <p class="m-0">Nome do paciente: {{ agendamentoBuscado.paciente.nomePaciente }}</p>
+                    <p class="m-0">Operação: {{ agendamentoBuscado.operacao.nomeOperacao }}</p>
+                    <p class="m-0">Profissional: {{ `${agendamentoBuscado.profissional.nomeProfissional} (ID:
+                        ${agendamentoBuscado.profissional.idProfissional})` }}</p>
+                </div>
+                <div class="flex-row col-auto">
+                    <button (click)="modalEditarAgendamento(agendamentoBuscado)"
+                        class="btn btn-warning me-2">Editar</button>
+                    <button (click)="excluirAgendamento(agendamentoBuscado)" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

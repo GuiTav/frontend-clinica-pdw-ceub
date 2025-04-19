@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, model, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { snackbarDefaultConfig } from '../../app.component';
 import { EspecialidadeRes } from '../../pages/especialidades/especialidades.model';
 import { EspecialidadesService } from '../../pages/especialidades/especialidades.service';
 import { ProfissionalReq, ProfissionalRes } from '../../pages/profissionais/profissionais.model';
-import { MatSelectModule } from '@angular/material/select';
 
 @Component({
 	selector: 'app-dialog-profissional',
@@ -50,7 +49,6 @@ export class DialogProfissionalComponent implements OnInit {
 			this.especialidades = resultado;
 			let instanciasListaEspecialidades = this.especialidades.filter(e => this.inputEspecialidades?.some(eInput => eInput.idEspecialidade == e.idEspecialidade));
 			this.especialidadesSelecionadas.set(instanciasListaEspecialidades);
-			console.log(this.especialidadesSelecionadas());
 		});
 	}
 

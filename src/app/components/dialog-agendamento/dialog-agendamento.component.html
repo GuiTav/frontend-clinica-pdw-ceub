@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Agendamento</h2>
+<mat-dialog-content>
+    <p>Insira os dados do agendamento:</p>
+    <mat-form-field class="w-100" *ngIf="isEdicao">
+        <mat-label>ID do agendamento</mat-label>
+        <input matInput disabled="true" type="number" [(ngModel)]="idAgendamento" />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Paciente</mat-label>
+        <mat-select [(ngModel)]="paciente">
+            <mat-option *ngFor="let paciente of pacientesDisponiveis" [value]="paciente">{{ `${paciente.cpfPaciente} -
+                ${paciente.nomePaciente}`}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="row">
+        <mat-form-field class="col-8">
+            <mat-label>Data</mat-label>
+            <input matInput [matDatepicker]="datepicker" [min]="dataMinima" [(ngModel)]="dataHoraAgendamento" />
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-4">
+            <mat-label>Hora</mat-label>
+            <input matInput [matTimepicker]="timepicker" [(ngModel)]="dataHoraAgendamento" />
+            <mat-timepicker #timepicker />
+            <mat-timepicker-toggle [for]="timepicker" matSuffix />
+        </mat-form-field>
+    </div>
+    <mat-form-field class="w-100">
+        <mat-label>Operação</mat-label>
+        <mat-select [(ngModel)]="operacao">
+            <mat-option *ngFor="let operacao of operacoesDisponiveis" [value]="operacao">{{ operacao.nomeOperacao
+                }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Profissionais</mat-label>
+        <mat-select [(ngModel)]="profissional" [disabled]="profissionaisDisponiveis.length < 1">
+            <mat-option *ngFor="let profissional of profissionaisDisponiveis" [value]="profissional">
+                {{ `${profissional.idProfissional} - ${profissional.nomeProfissional}` }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="fechar()">Cancelar</button>
+    <button mat-button (click)="salvar()">Salvar</button>
+</mat-dialog-actions>

@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, model, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { OperacaoReq, OperacaoRes } from './operacoes.model';
-import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
 import { snackbarDefaultConfig } from '../../app.component';
-import { DialogOperacaoComponent } from '../../components/dialog-operacao/dialog-operacao.component';
 import { DialogExclusaoComponent } from '../../components/dialog-exclusao/dialog-exclusao.component';
+import { DialogOperacaoComponent } from '../../components/dialog-operacao/dialog-operacao.component';
+import { OperacaoReq, OperacaoRes } from './operacoes.model';
 import { OperacoesService } from './operacoes.service';
 
 @Component({
